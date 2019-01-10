@@ -1,0 +1,322 @@
+\ProvidesPackage{cpeproject}[2018/11/27 v0.0a CPE CMU project template]
+
+\RequirePackage{xkeyval}
+
+\DeclareOptionX{491}{\surveytrue}
+\DeclareOptionX{492}{\projecttrue}
+
+\DeclareOptionX{form}{\def\form{#1}}
+\ExecuteOptionsX{form=1} % Default
+
+\DeclareOptionX*{\PassOptionsToPackage{\CurrentOption}{thaixelatex}}
+
+\newif\ifsurvey\surveyfalse
+\newif\ifproject\projectfalse
+
+\ProcessOptionsX
+
+\RequirePackage{thaixelatex}
+
+%% margins
+\RequirePackage[margin=1in,top=0.75in,bottom=0.75in,headheight=0.25in,headsep=0in]{geometry}
+
+%% list setup
+\RequirePackage{enumitem}
+\setlist{nosep,leftmargin=*,listparindent=1.5em}
+
+\RequirePackage{fancyhdr}
+
+\RequirePackage{ulem}
+\RequirePackage{tabularx}
+
+\setlength\topsep{0pt}
+
+\def\r@name{name}
+\newcommand\rname[1]{\def\r@name{#1}\author{#1}}
+\def\r@sid{sid}
+\newcommand\rsid[1]{\def\r@sid{#1}}
+\newcommand\rnametwo[1]{\def\r@nametwo{#1}}
+\def\r@sidtwo{sidtwo}
+\newcommand\rsidtwo[1]{\def\r@sidtwo{#1}}
+
+\def\r@projtname{projtname}
+\newcommand\rprojtname[1]{\def\r@projtname{#1}\title{#1}}
+\def\r@projename{projename}
+\newcommand\rprojename[1]{\def\r@projename{#1}}
+\def\r@advisor{advisor}
+\newcommand\radvisor[1]{\def\r@advisor{#1}}
+\def\r@committeeone{committeeone}
+\newcommand\rcommitteeone[1]{\def\r@committeeone{#1}}
+\def\r@committeetwo{committeetwo}
+\newcommand\rcommitteetwo[1]{\def\r@committeetwo{#1}}
+
+\def\r@year{year}
+\newcommand\ryear[1]{\def\r@year{#1}}
+
+\ifnum\form=3
+\def\r@section{section}
+\newcommand\rsection[1]{\def\r@section{#1}}
+\newcommand\rsectiontwo[1]{\def\r@sectiontwo{#1}}
+\def\r@date{date}
+\newcommand\rdate[1]{\def\r@date{#1}}
+\def\r@month{month}
+\newcommand\rmonth[1]{\def\r@month{#1}}
+\def\r@semester{semester}
+\newcommand\rsemester[1]{\def\r@semester{#1}}
+\def\r@acadyear{acadyear}
+\newcommand\racadyear[1]{\def\r@acadyear{#1}}
+\def\r@copies{copies}
+\newcommand\rcopies[1]{\def\r@copies{#1}}
+\fi
+
+\pagestyle{fancy}
+\renewcommand\headrulewidth{0pt}
+
+\def\r@report{report}
+\def\courseno{courseno}
+\def\coursename{coursename}
+
+\ifsurvey
+\rhead{(แบบ วศ.คพ. 491/\form)}
+\cfoot{}
+
+\def\r@report{รายงานการศึกษาเบื้องต้น}
+\def\courseno{261491}
+\def\coursename{สำรวจเพื่อโครงงาน}
+\fi
+
+\ifproject
+\rhead{(แบบ วศ.คพ. 492/\form)}
+\cfoot{}
+
+\def\r@report{หนังสือโครงงาน}
+\def\courseno{261492}
+\def\coursename{โครงงาน}
+\fi
+
+\ifthenelse{\equal{\form}{1}}{
+\RequirePackage{tabularx}
+\RequirePackage{multirow}
+\RequirePackage[table]{xcolor}
+\RequirePackage{tikz}
+
+\setlist[enumerate,2]{label={\arabic*)}}
+\newcommand\r@letter{
+ใบแจ้งหัวข้อโครงงานและอาจารย์ที่ปรึกษา \\
+กระบวนวิชา\coursename{} \courseno{}
+\end{center}
+
+\begin{enumerate}
+\item ชื่อ \dotuline{ \r@name{}\hfill} รหัส \dotuline{ \r@sid{} } \ifdefined\r@nametwo\\ ชื่อ \dotuline{ \r@nametwo{}\hfill} รหัส \dotuline{ \r@sidtwo{} }\fi
+
+\item ชื่อหัวข้อโครงงาน (ภาษาไทย) \dotuline{ \r@projtname{}\hfill } \\
+ชื่อหัวข้อโครงงาน (ภาษาอังกฤษ) \dotuline{ \r@projename{}\hfill }
+
+\item ชื่ออาจารย์ที่ปรึกษาโครงงาน \dotuline{ \r@advisor{}\hfill }
+\ifproject
+\\
+ชื่อกรรมการ
+\dotuline{ \r@committeeone{}\hfill }
+และ
+\dotuline{ \r@committeetwo{}\hfill }
+\fi
+}
+
+\renewcommand\maketitle{%
+\begin{center}
+\r@letter{}
+}
+
+\newenvironment{plan}{%
+\tabularx{\linewidth}{|X|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multirow{2}{*}{\bf การดำเนินงาน} & \multicolumn{12}{c|}{\bf ระยะเวลา (สัปดาห์)} \tabularnewline \cline{2-13}
+& 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 \tabularnewline \hline
+}{%
+\endtabularx
+}
+\newtoks\@plantoks
+\newcommand\planitem[4][gray]{%
+#2%
+\@plantoks{}%
+\foreach \i in {4,...,15}
+  {%
+    \global\@plantoks\expandafter\expandafter\expandafter
+     {\expandafter\the\expandafter\@plantoks &}%
+    \ifthenelse{\NOT\i<#3 \AND \NOT\i>#4}{
+      \global\@plantoks\expandafter\expandafter\expandafter
+     {\expandafter\the\expandafter\@plantoks \cellcolor{#1}}%
+    }{}
+  }%
+\the\@plantoks
+\tabularnewline \hline
+}
+
+\newcommand\makefooter{%
+\ifsurvey
+\item อาจารย์ที่ปรึกษาโครงงานขออนุมัติแต่งตั้งกรรมการสอบโครงงานสำหรับหัวข้อดังกล่าว ประจำปี \r@year{} จำนวน 2 ท่าน ดังต่อไปนี้
+\begin{enumerate}[itemsep=2ex]
+\item \dotuline{ \r@committeeone{}\hfill}\quad
+\begin{tabular}[t]{@{}r@{}c@{}l@{}}
+ลงชื่อ & \dotuline{\hspace{2.5in}} \\
+ & (\r@committeeone{})
+\end{tabular}
+
+\item \dotuline{ \r@committeetwo{}\hfill}\quad
+\begin{tabular}[t]{@{}r@{}c@{}l@{}}
+ลงชื่อ & \dotuline{\hspace{2.5in}} \\
+ & (\r@committeetwo{})
+\end{tabular}
+\end{enumerate}
+\fi
+\end{enumerate}
+}
+} % form1
+{
+\ifthenelse{\equal{\form}{3}}{
+\newcommand\r@letter{
+คำขอประเมินผลการศึกษา \\
+กระบวนวิชา\coursename{} \courseno{} \\
+\rule{1in}{0.5pt}
+\end{center}
+\begin{flushright}
+วันที่ \dotuline{ \r@date{} } เดือน \dotuline{ \r@month{} } พ.ศ.\,\dotuline{ \r@year{} }
+\end{flushright}
+
+\noindent
+เรียน หัวหน้าภาควิชาวิศวกรรมคอมพิวเตอร์
+
+\bigskip
+
+ข้าพเจ้า \dotuline{ \r@name{}\hfill} รหัส \dotuline{ \r@sid{} } \\
+\ifdefined\r@nametwo และข้าพเจ้า \dotuline{ \r@nametwo{}\hfill} รหัส \dotuline{ \r@sidtwo{} } \\\fi
+ขอส่ง\r@report{} กระบวนวิชา\coursename{} \courseno{} ซึ่งลงทะเบียนตอนที่~\dotuline{ \r@section{} }
+\ifdefined\r@sectiontwo และตอนที่~\dotuline{ \r@sectiontwo{} } \fi
+ประจำภาค\-เรียนที่ \dotuline{ \r@semester{} } ปีการศึกษา \dotuline{ \r@acadyear{} } จำนวน \dotuline{ \r@copies{} } ชุด \\
+ชื่อหัวข้อโครงงาน (ภาษาไทย) \dotuline{ \r@projtname{}\hfill } \\
+ชื่อหัวข้อโครงงาน (ภาษาอังกฤษ) \dotuline{ \r@projename{}\hfill } \\
+โดยมี \dotuline{ \r@advisor{}\hfill } เป็นอาจารย์ที่ปรึกษา \\
+และมี
+\dotuline{ \r@committeeone{} }
+และ
+\dotuline{ \r@committeetwo{} }
+เป็นกรรมการสอบ
+
+\bigskip
+
+จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ
+}
+
+\newcommand\r@signature{
+\begin{flushright}
+\begin{tabular}{@{}r@{}c@{}}
+ \\[-2ex]
+ลงชื่อ & \dotuline{\hspace{2.5in}} \\
+ & (\r@name{})
+\end{tabular}
+\ifdefined\r@nametwo
+\quad
+\begin{tabular}{@{}c@{}}
+ \\[-2ex]
+\dotuline{\hspace{2.5in}} \\
+(\r@nametwo{})
+\end{tabular}
+\fi
+\end{flushright}
+}
+
+\newcommand\r@footer{
+
+\vfill
+
+\begin{center}
+\begin{tabular}{@{}|p{0.47\linewidth}|p{0.47\linewidth}|@{}}
+\hline
+\begin{minipage}[t]{0.95\linewidth}
+\uline{\bf สำหรับภาควิชา}
+\begin{flushright}
+เลขที่รับ \dotuline{\hspace*{1in}}\\[0.5ex]
+โครงงานเลขที่ \dotuline{\hspace*{1in}}
+
+\begin{tabular}{@{}r@{}c@{}l@{}}
+ \\
+ลงชื่อ & \dotuline{\hspace{2in}} & ผู้รับ \\[0.5ex]
+ & วันที่ \dotuline{\hspace{3em}} / \dotuline{\hspace{5em}} / \dotuline{\hspace{3em}}
+\end{tabular}
+\end{flushright}
+\end{minipage}
+&
+\begin{minipage}[t]{0.95\linewidth}
+\uline{\bf สำหรับอาจารย์ที่ปรึกษา}\\
+ความเห็นของอาจารย์ที่ปรึกษา
+\begin{itemize}[label=$\bigcirc$]
+\item เห็นสมควรให้ประเมินผลการศึกษา
+\item ไม่สมควรให้ประเมินผลการศึกษา%
+\ifproject
+และได้รับลำดับขั้น \dotuline{\hspace*{3em}} เนื่องจาก \dotuline{\hspace*{\fill}}
+\fi
+\end{itemize}
+\begin{flushright}
+\begin{tabular}{r@{}c@{}}
+ \\[-2ex]
+ลงชื่อ & \dotuline{\hspace{2in}} \\
+ & (\r@advisor{}) \\
+ & อาจารย์ที่ปรึกษา
+\end{tabular}
+\end{flushright}
+\end{minipage}
+\\\hline
+\begin{minipage}[t]{0.95\linewidth}
+\uline{\bf สำหรับกรรมการสอบ}\\
+จึงเรียนมาเพื่อโปรดทราบ
+\begin{flushright}
+\begin{tabular}{@{}r@{}c@{}l@{}}
+ลงชื่อ & \dotuline{\hspace{2in}} & กรรมการ \\
+ & (\r@committeeone{})
+ \\[1ex]
+ลงชื่อ & \dotuline{\hspace{2in}} & กรรมการ \\
+ & (\r@committeetwo{})
+\end{tabular}
+\end{flushright}
+\end{minipage}
+&
+\begin{minipage}[t]{0.95\linewidth}
+\uline{\bf สำหรับหัวหน้าภาควิชา}
+\begin{itemize}[label=$\bigcirc$]
+\item เห็นควรอนุมัติให้ประเมินผลการศึกษา
+\item ไม่ควรอนุมัติให้ประเมินผลการศึกษา
+\end{itemize}
+\begin{flushright}
+\begin{tabular}{r@{}c@{}}
+ \\[-2ex]
+ลงชื่อ & \dotuline{\hspace{2in}} \\
+ & หัวหน้าภาควิชาวิศวกรรมคอมพิวเตอร์ \\[0.5ex]
+ & วันที่ \dotuline{\hspace{3em}} / \dotuline{\hspace{5em}} / \dotuline{\hspace{3em}}
+\end{tabular}
+\end{flushright}
+\end{minipage}
+\\\hline
+\end{tabular}
+\end{center}
+}
+
+\renewcommand\maketitle{
+\begin{center}
+\r@letter{}
+
+\ifproject
+\bgroup
+\small
+\begin{itemize}[label=,labelsep=0pt]
+\item outcome 7: เข้าใจผลกระทบจากการแก้ปัญหาทางวิศวกรรมในบริบทของสังคมและสิ่งแวดล้อม และแสดงให้เห็นถึงองค์ความรู้และสิ่งจำเป็นสำหรับการพัฒนาที่ยั่งยืน \hfill \llap{\footnotesize $\bigcirc$ อธิบายในบทสุดท้ายของรูปเล่ม \qquad$\bigcirc$ ไม่อธิบายในบทสุดท้ายของรูปเล่ม}
+\item outcome 11: แสดงให้เห็นถึงองค์ความรู้และความเข้าใจทางวิศวกรรมและหลักการการบริหารจัดการ และสามารถประยุกต์องค์ความรู้และความเข้าใจเหล่านั้นในงานทางวิศวกรรม ทั้งในฐานะผู้ร่วมและหัวหน้าทีม เพื่อจัดการโครงการทางวิศวกรรมในสภาพแวดล้อมที่ต้องการองค์ความรู้แบบสหสาขา \hfill \llap{\footnotesize $\bigcirc$ อธิบายในบทสุดท้ายของรูปเล่ม \qquad$\bigcirc$ ไม่อธิบายในบทสุดท้ายของรูปเล่ม}
+\end{itemize}
+\egroup
+\fi
+
+\r@signature{}
+
+\r@footer{}
+}
+} % form3
+{}}

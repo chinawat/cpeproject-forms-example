@@ -1,0 +1,66 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[492,form=1]{cpeproject}
+
+%%%%% describe your project here
+\ryear{2561}
+
+\rname{นายกินรี ไทร์ล้ำเลิศ}
+\rsid{610611612}
+
+%% uncomment if needed
+%\rnametwo{นายบรรจบ พบเอฟตลอด}
+%\rsidtwo{620610600}
+%\rsectiontwo{567}
+
+\rprojtname{โครงงานอันสุดหรูของฉัน}
+\rprojename{My Awesome Project}
+
+\radvisor{อ.ชินวัตร อิศราดิสัยกุล}
+\rcommitteeone{อ.กรรมการ ท่านหนึ่ง}
+\rcommitteetwo{อ.กรรมการ ท่านสอง}
+%%%%% end project description
+
+\begin{document}
+\maketitle
+
+\item สรุปสาระสำคัญในการศึกษาค้นคว้า
+
+%% insert summary here
+%% \vspace command may be removed
+\vspace{3in}
+
+\item
+\ifsurvey%
+วัตถุประสงค์%
+\else%
+แนวทาง%
+\fi
+ในการศึกษาค้นคว้า
+\begin{enumerate}
+%% insert objectives/approaches here
+\item
+\item
+\item
+\end{enumerate}
+
+\newpage
+
+\item แผนการดำเนินงาน\\
+\begin{plan}
+\planitem{ศึกษาค้นคว้า}{5}{8}
+\planitem{เผา}{9}{11}
+\planitem{ทดสอบ}{4}{15}
+\end{plan}
+
+\ifproject
+\item ผลที่คาดว่าจะได้รับ
+%% insert expectations here
+\begin{enumerate}
+\item
+\item
+\item
+\end{enumerate}
+\fi
+
+\makefooter
+\end{document}

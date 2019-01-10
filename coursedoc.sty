@@ -1,0 +1,160 @@
+\DeclareOption{tikz}{\tikztrue}
+\DeclareOption{listings}{\listingstrue}
+\DeclareOption{exam}{\examtrue}
+
+\newif\iftikz\tikzfalse
+\newif\iflistings\listingsfalse
+\newif\ifexam\examfalse
+
+\ProcessOptions
+
+\ifexam
+\else
+\RequirePackage{thaixelatex}
+
+%% math setup
+\RequirePackage{amsmath}
+\RequirePackage{unicode-math}
+\setmathfont{TeX Gyre Termes Math}
+
+%% margins
+\usepackage[margin=1in,headheight=0.25in]{geometry}
+
+%% list setup
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*,listparindent=1.5em}
+
+%% homework setup
+\newlist{problems}{enumerate}{1} % 1 is max depth
+\setlist[problems]{resume,label=\arabic*.,ref=\arabic*,font=\bf,%
+leftmargin=*,listparindent=1.5em}
+
+\newlist{subproblems}{enumerate}{2} % 2 is max depth
+\setlist[subproblems]{label=(\alph*),ref=(\alph*),%
+leftmargin=*,listparindent=1.5em}
+
+\newcommand\stars[1]{[#1 \ifnum #1=1 star\else stars\fi]}
+
+%% header commands
+\newcommand\semesterno{1}
+\newcommand\acadyear{2561}
+\newcommand\headerBase{%
+{\large\bf 261-216---ภาคเรียนที่~\semesterno{} ปีการศึกษา~\acadyear{}\\
+\@title
+}
+}
+\newcommand\header{%
+\begin{center}
+\headerBase
+\end{center}
+}
+\def\@duedate{due date}
+\newcommand\duedate[1]{\def\@duedate{#1}}
+\newcommand\hwheader{%
+\begin{center}
+\headerBase
+
+Due: \@duedate
+\end{center}
+}
+
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+%
+% \setanswerstyle{...}
+%    Change the default style, color, etc. of answer text
+%    E.g., \setanswerstyle{\color{red}\em}
+%
+\newcommand\setanswerstyle[1]{\gdef\@answerstyle{#1}}
+\newcommand\@answerstyle{}
+%
+% \presentanswer{text} is used to present the answer 'text'.
+%   Can be overridden to present answers differently.
+%
+\newcommand\presentanswer[1]{%
+\par\noindent\textbf{Answer}:\nopagebreak #1%
+}
+\newenvironment{answer}{%
+  %\nopagebreak\par\noindent
+  %\begin{minipage}{\linewidth}
+  \presentanswer
+  %\setlength{\parindent}{1.5em}
+  \bgroup\@answerstyle
+}{\egroup}%\end{minipage}}
+\fi % exam
+
+%% title formatting
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\large\bfseries}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\bfseries}
+  {\thesubsection}{1em}{}
+
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newcounter{thm}
+\newtheorem{axiom}[thm]{Axiom}
+\newtheorem{conjecture}[thm]{Conjecture}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{theorem}[thm]{Theorem}
+\newenvironment{pf}[1][Proof]{%
+\begin{proof}[\bf #1]
+}
+{\end{proof}}
+
+%% tikz setup (if needed)
+\iftikz
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
+\tikzset{>/.tip={Latex[length=2mm]}}
+\tikzset{arrow/.style={->}}
+\tikzset{double distance=2pt}
+\fi
+
+%% listings setup (if needed)
+\iflistings
+\usepackage{listings}
+\lstset{
+columns=flexible,
+basicstyle=\small\ttfamily,
+keywordstyle=\bfseries,
+%commentstyle=\itshape,
+showstringspaces=false,
+numbers=left,
+numberstyle=\scriptsize\itshape}
+\fi
+
+\usepackage{stmaryrd}
+%% math commands
+\allowdisplaybreaks
+%%% set
+\newcommand\set[1]{\ensuremath{\left\{#1\right\}}}
+\newcommand\pow{\ensuremath{\mathrm{pow}}}
+%%% logic
+\newcommand\true{\ensuremath{\mathrm{T}}}
+\newcommand\false{\ensuremath{\mathrm{F}}}
+%%% relations
+\newcommand\R[3][R]{\ensuremath{#2 \mathrel{#1} #3}}
+%%% regular expressions
+\newcommand\str[1]{\texttt{#1}}
+%%% context-free grammars
+\newcommand\nt[1]{\textit{#1}}
+\newcommand\ntl[1]{\ensuremath{\langle\textsc{#1}\rangle}}
+
+%%% lists
+\newcommand\lconcat{\ensuremath{\mathbin{+\!\!+}}}
+
+%% miscellaneous
+\newcommand\ost{\textsuperscript{th}}
+\newcommand\ond{\textsuperscript{nd}}
+\newcommand\ord{\textsuperscript{rd}}
+\newcommand\oth{\textsuperscript{th}}
+
+\usepackage{pifont}
+\newcommand\yea{{\disableTransitionRules\ding{52}}}
+\newcommand\nay{{\disableTransitionRules\ding{55}}}
